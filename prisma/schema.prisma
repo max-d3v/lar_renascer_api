@@ -22,7 +22,7 @@ model acolhidas {
   funcao                            String?   @db.Text
   registro_carteira                 String?   @db.Text
   saude                             String?   @db.Text
-  pre_natal                         String?   @map("pre-natal") @db.VarChar(50)
+  pre_natal                         String?   @db.VarChar(50)
   tempo_gestacao                    String?   @db.VarChar(50)
   apresenta_problema_saude          String?   @db.VarChar(50)
   problemas_saude                   String?   @db.LongText
