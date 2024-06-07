@@ -10,44 +10,44 @@ datasource db {
 model acolhidas {
   id                                Int       @id @default(autoincrement())
   nome                              String?   @db.Text
-  data_nascimento                   DateTime? @db.Date
+  dataNascimento                    DateTime? @map("data_nascimento") @db.Date
   rg                                String?   @db.VarChar(50)
-  estado_civil                      String?   @db.VarChar(50)
-  filiacao_genitor                  String?   @db.Text
-  filiacao_genitora                 String?   @db.TinyText
+  estadoCivil                       String?   @map("estado_civil") @db.VarChar(50)
+  filiacaoGenitor                   String?   @map("filiacao_genitor") @db.Text
+  filiacaoGenitora                  String?   @map("filiacao_genitora") @db.Text
   telefone                          String?   @db.VarChar(50)
   escolaridade                      String?   @db.VarChar(50)
   alfabetizada                      String?   @db.VarChar(50)
-  experiencia_profissional          String?   @db.LongText
+  experienciaProfissional           String?   @map("experiencia_profissional") @db.LongText
   funcao                            String?   @db.Text
-  registro_carteira                 String?   @db.Text
+  registroCarteira                  String?   @map("registro_carteira") @db.Text
   saude                             String?   @db.Text
-  pre_natal                         String?   @db.VarChar(50)
-  tempo_gestacao                    String?   @db.VarChar(50)
-  apresenta_problema_saude          String?   @db.VarChar(50)
-  problemas_saude                   String?   @db.LongText
-  tratamento_problema_saude         String?   @db.LongText
-  portador_necessidades_especiais   String?   @db.VarChar(50)
-  necessidades_especiais            String?   @db.VarChar(50)
-  tratamento_necessidades_especiais String?   @db.VarChar(50)
-  cadastro_unico                    String?   @db.VarChar(50)
-  bolsa_familia                     String?   @db.VarChar(50)
-  valor_bolsa_familia               String?   @db.VarChar(50)
-  pensao                            String?   @db.VarChar(50)
-  valor_pensao                      String?   @db.VarChar(50)
-  historia_pregressa_atual          String?   @db.LongText
-  cpf                               String?   @db.VarChar(50)
-  data_cadastro                     DateTime? @db.DateTime(0)
+  pre_natal                         String?   @map("pre_natal") @db.VarChar(50)
+  tempoGestacao                     String?   @map("tempo_gestacao") @db.VarChar(50)
+  apresentaProblemaSaude            String?   @map("apresenta_problema_saude") @db.VarChar(50)
+  problemas_saude                   String?   @map("problemas_saude") @db.LongText
+  tratamentoProblemaSaude           String?   @map("tratamento_problema_saude") @db.LongText
+  portadorNecessidadesEspeciais     String?   @map("portador_necessidades_especiais") @db.VarChar(50)
+  necessidadesEspeciais             String?   @map("necessidades_especiais") @db.VarChar(50)
+  tratamentoNecessidadesEspeciais   String?   @map("tratamento_necessidades_especiais") @db.VarChar(50)
+  cadastroUnico                     String?   @map("cadastro_unico") @db.VarChar(50)
+  bolsaFamilia                      String?   @map("bolsa_familia") @db.VarChar(50)
+  valorBolsaFamilia                 String?   @map("valor_bolsa_familia") @db.VarChar(50)
+  pensao                            String?   @map("pensao") @db.VarChar(50)
+  valorPensao                       String?   @map("valor_pensao") @db.VarChar(50)
+  historiaPregressaAtual            String?   @map("historia_pregressa_atual") @db.LongText
+  cpf                               String?   @map("cpf") @db.VarChar(50)
+  data_cadastro                     DateTime? @map("data_cadastro") @db.DateTime(0)
 
   @@index([cpf], map: "cpf")
 }
 
 model composicao_familiar {
   id              Int       @id @default(autoincrement())
-  cpf_acolhida    Int?
-  nome_familiar   String?   @db.Text
+  cpfAcolhida     Int?      @map("cpf_acolhida") @db.Int
+  nomeFamiliar    String?   @map("nome_familiar")@db.Text
   parentesco      String?   @db.Text
-  data_nascimento DateTime? @db.Date
+  dataNascimento  DateTime? @map("data_nascimento") @db.Date
   escolaridade    String?   @db.LongText
 }
 
