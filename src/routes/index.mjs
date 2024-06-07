@@ -1,14 +1,16 @@
 import { Router } from "express";
-import exampleRouter from "./acolhidas.mjs";
+import acolhidasRouter from "./acolhidas.mjs";
 import authRouter from "./auth.mjs";
-
+import benfeitoresRouter from "./benfeitores.mjs";
 
 
 const router = Router();
 
 //Router initialization
-router.use(exampleRouter);
+router.use(acolhidasRouter);
 router.use(authRouter);
+router.use(benfeitoresRouter);
+
 // ----------------------------
 
 

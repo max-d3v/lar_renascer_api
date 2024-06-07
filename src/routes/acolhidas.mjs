@@ -1,6 +1,6 @@
 import {Router} from "express";
 import { checkSchema } from "express-validator";
-import { exampleRouteValidation } from "../utils/validationSchemas.mjs";
+import { acolhidaSearch } from "../utils/validationSchemas.mjs";
 import { matchedData,validationResult } from "express-validator";
 import { handleError } from "../utils/helpers.mjs";
 import { PrismaClient } from "@prisma/client";
@@ -10,19 +10,28 @@ const router = Router();
 const prisma = new PrismaClient();
 
 //example POST route using express-validator validation
-router.post('/acolhidas/todas', async (req, res) => {
-    const { acolhida } = req.body;
-    if (!acolhida || acolhida == "") {
-        return res.status(200).send({status: "error", "message": "Nome da acolhida não informado!"}); 
+router.post('/acolhidas', checkSchema(acolhidaSearch), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(200).send({status: "error", "message": errors.array()}); 
+    }
+    const { acolhida } = matchedData(req);
+
+    var response;
+
+    if (acolhida !== "") {
+        response = await prisma.acolhidas.findMany({
+            where: {
+                nome: {
+                    contains: acolhida
+                }
+            }
+        })
+    }
+    if (acolhida === "") {
+        response = await prisma.acolhidas.findMany();
     }
     
-    const response = await prisma.acolhidas.findMany({
-        where: {
-            nome: {
-                contains: acolhida
-            }
-        }
-    })
 
     if (!response || response.length == 0) {
         return res.status(200).send({status: "error", "message": "Nenhuma acolhida encontrada."}); 
@@ -33,7 +42,7 @@ router.post('/acolhidas/todas', async (req, res) => {
     }
     
     return res.status(200).send({status: "error", "message": "Erro inesperado!"}); 
-})
+});
 // ----------------------------
 
 

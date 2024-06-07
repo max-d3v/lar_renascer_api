@@ -1,12 +1,12 @@
 //Validation schemas using express-validator
-export const exampleRouteValidation = {
-    example: {
-        isString: {
-            errorMessage: "Example must be a string",
-        },
+export const acolhidaSearch = {
+    acolhida: {
         notEmpty: {
-            errorMessage: "Example cannot be empty",
-        }
+            exists: {
+                errorMessage: "Acolhida não fornecida!",
+                options: { checkNull: true }
+            },
+        },
     }
-} 
+}
 // ----------------------------
