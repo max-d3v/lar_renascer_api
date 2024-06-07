@@ -13,35 +13,38 @@ const prisma = new PrismaClient();
 router.post('/acolhidas', checkSchema(acolhidaSearch), async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(200).send({status: "error", "message": errors.array()}); ;
+        return res.status(200).send({status: "error", "message": errors.array()});
     }
     const { acolhida } = matchedData(req);
-
     var response;
-
-    if (acolhida !== "") {
-        response = await prisma.acolhidas.findMany({
-            where: {
-                nome: {
-                    contains: acolhida
+    try {
+        if (acolhida !== "") {
+            response = await prisma.acolhidas.findMany({
+                where: {
+                    nome: {
+                        contains: acolhida
+                    }
                 }
-            }
-        })
+            })
+        }
+        if (acolhida === "") {
+            response = await prisma.acolhidas.findMany();
+        }
+    } catch (error) {
+        return handleError(res, error);
     }
-    if (acolhida === "") {
-        response = await prisma.acolhidas.findMany();
-    }
+    
     
 
     if (!response || response.length == 0) {
-        return res.status(200).send({status: "error", "message": "Nenhuma acolhida encontrada."}); 
-    }
+        return handleError(res, "Nenhuma acolhida encontrada.");
+        }
 
     if (response.length >= 1) {
         return res.status(200).send({status: "success", data: response}); 
     }
     
-    return res.status(200).send({status: "error", "message": "Erro inesperado!"}); 
+    return handleError(res, "Erro inesperado.");
 });
 // ----------------------------
 

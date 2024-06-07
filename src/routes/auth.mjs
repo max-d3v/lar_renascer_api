@@ -10,7 +10,8 @@ router.post('/auth/login', (req, res, next) => {
             return next(err); 
         }
         if (!user) { 
-            return res.status(200).send({status: "error", message: info}); 
+            return  handleError(res, info);
+
         }
         req.logIn(user, function(err) {
             if (err) { 

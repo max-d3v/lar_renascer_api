@@ -5,7 +5,7 @@ const saltRounds = 10
 
 
 export const handleError = (res, err, errCode = 200) => {
-    res.status(errCode).json({ error: err });
+    res.status(errCode).json({ status: "error", message: err });
 }
 // ------------------------------
 

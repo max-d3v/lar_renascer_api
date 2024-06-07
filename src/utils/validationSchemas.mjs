@@ -9,4 +9,15 @@ export const acolhidaSearch = {
         },
     }
 }
+
+export const benfeitoresSearch = {
+    benfeitor: {
+        notEmpty: {
+            exists: {
+                errorMessage: "Benfeitor não fornecido!",
+                options: { checkNull: true }
+            },
+        },
+    }
+}
 // ----------------------------
