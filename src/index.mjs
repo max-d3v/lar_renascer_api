@@ -9,18 +9,6 @@ import mysql from 'mysql2/promise';
 import cors from 'cors';
 
 
-
-
-//CREATE SWAGGER CONFIG:
-//const require = createRequire(import.meta.url); // Cria uma instância de require
-//const swaggerDocs = require('./swagger.json');
-// ------------------------------
-
-
-
-
-
-
 //Mysql store for sessions: 
 const MySQLStoreFactory = await import('express-mysql-session');
 const MySQLStore = MySQLStoreFactory.default(session);

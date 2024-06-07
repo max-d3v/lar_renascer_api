@@ -37,16 +37,17 @@ model acolhidas {
   valor_pensao                      String?   @db.VarChar(50)
   historia_pregressa_atual          String?   @db.LongText
   cpf                               String?   @db.VarChar(50)
+  data_cadastro                     DateTime? @db.DateTime(0)
 
   @@index([cpf], map: "cpf")
 }
 
 model composicao_familiar {
   id              Int       @id @default(autoincrement())
-  cpf_acolhida    Int?      @map("cpf acolhida")
-  nome_familiar   String?   @map("nome familiar") @db.Text
+  cpf_acolhida    Int?
+  nome_familiar   String?   @db.Text
   parentesco      String?   @db.Text
-  data_nascimento DateTime? @map("data nascimento") @db.Date
+  data_nascimento DateTime? @db.Date
   escolaridade    String?   @db.LongText
 }
 
