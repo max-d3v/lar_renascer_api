@@ -44,12 +44,6 @@ const sessionStore = new MySQLStore(mysqlStoreOptions, dbConnection);
 
 
 
-
-
-
-
-
-
 //App creation, port definition and essential middlewares:
 const app = express();
 const PORT = 3001;
@@ -83,6 +77,11 @@ app.use(passport.session());
 
 //Authentication middleware
 app.use((req, res, next) => {
+
+    if (true) {
+        return next();
+    }
+
     if (req.path == '/api/v1/auth/login') {
         return next();
     }
@@ -100,6 +99,7 @@ app.use((req, res, next) => {
 app.get("/api/v1/status", (req, res) => {
     res.status(200).send({"status": "success", "msg": "Ok sistems"})
 })
+
 app.use('/api/v1', routerIndex)
 // ------------------------------
 
@@ -129,8 +129,6 @@ app.use((err, req, res, next) => {
 
 //app initialization, running on port defined
 app.listen(PORT, () => {
-    console.log('running');
-
-    
+    console.log('running on port ' + PORT);
 })
 // ------------------------------

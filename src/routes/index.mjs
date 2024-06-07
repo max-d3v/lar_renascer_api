@@ -1,5 +1,5 @@
 import { Router } from "express";
-import exampleRouter from "./example.mjs";
+import exampleRouter from "./acolhidas.mjs";
 import authRouter from "./auth.mjs";
 
 

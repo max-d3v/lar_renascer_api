@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,11 +7,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model acolhidas {
+  id                                Int       @id @default(autoincrement())
+  nome                              String?   @db.Text
+  data_nascimento                   DateTime? @db.Date
+  rg                                String?   @db.VarChar(50)
+  estado_civil                      String?   @db.VarChar(50)
+  filiacao_genitor                  String?   @db.Text
+  filiacao_genitora                 String?   @db.TinyText
+  telefone                          String?   @db.VarChar(50)
+  escolaridade                      String?   @db.VarChar(50)
+  alfabetizada                      String?   @db.VarChar(50)
+  experiencia_profissional          String?   @db.LongText
+  funcao                            String?   @db.Text
+  registro_carteira                 String?   @db.Text
+  saude                             String?   @db.Text
+  pre_natal                         String?   @map("pre-natal") @db.VarChar(50)
+  tempo_gestacao                    String?   @db.VarChar(50)
+  apresenta_problema_saude          String?   @db.VarChar(50)
+  problemas_saude                   String?   @db.LongText
+  tratamento_problema_saude         String?   @db.LongText
+  portador_necessidades_especiais   String?   @db.VarChar(50)
+  necessidades_especiais            String?   @db.VarChar(50)
+  tratamento_necessidades_especiais String?   @db.VarChar(50)
+  cadastro_unico                    String?   @db.VarChar(50)
+  bolsa_familia                     String?   @db.VarChar(50)
+  valor_bolsa_familia               String?   @db.VarChar(50)
+  pensao                            String?   @db.VarChar(50)
+  valor_pensao                      String?   @db.VarChar(50)
+  historia_pregressa_atual          String?   @db.LongText
+  cpf                               String?   @db.VarChar(50)
 
-model Usuario {
-  id Int @id @default(autoincrement())
-  nome String
-  tipo String
-  usuario String @unique
-  senha String
+  @@index([cpf], map: "cpf")
+}
+
+model composicao_familiar {
+  id              Int       @id @default(autoincrement())
+  cpf_acolhida    Int?      @map("cpf acolhida")
+  nome_familiar   String?   @map("nome familiar") @db.Text
+  parentesco      String?   @db.Text
+  data_nascimento DateTime? @map("data nascimento") @db.Date
+  escolaridade    String?   @db.LongText
+}
+
+model sessions {
+  session_id String  @id @db.VarChar(128)
+  expires    Int     @db.UnsignedInt
+  data       String? @db.MediumText
+}
+
+model usuarios {
+  id      Int    @id @default(autoincrement())
+  nome    String @default("0") @db.VarChar(250)
+  tipo    String @default("0") @db.VarChar(250)
+  usuario String @default("0") @db.VarChar(250)
+  senha   String @default("0") @db.VarChar(250)
 }

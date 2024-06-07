@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { PrismaClient } from "@prisma/client";
 const router = Router();
 
 //Auth login route

@@ -3,7 +3,11 @@ import { Strategy } from 'passport-local';
 import { db } from "../db/db.mjs";
 import { queryDb, hashSenha } from "../utils/helpers.mjs";
 import bcrypt from  'bcrypt'
-// passport local login strategy
+import {  PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+
 passport.serializeUser((user, done) => {
     if (!user) {
         done(new Error("User not provided"), null);
@@ -22,16 +26,23 @@ passport.deserializeUser((user, done) => {
 export default passport.use(
     new Strategy({ usernameField: "usuario", passwordField: "senha" }, async (username, password, done) => {
         //Login Logic
-        const query = "SELECT * FROM usuarios WHERE usuario = ?";
-        const response = await queryDb(query, [username]);
-        if (!response) {
+
+        console.log(hashSenha("teste"));
+        
+        const user = await prisma.usuarios.findMany({
+            where: {
+                usuario: username
+            }
+        })
+
+        if (!user) {
             return done(null, false, 'Credencias inválidas!');
         }
-        if (response.length == 0) {
+        if (user.length == 0) {
             return done(null, false, 'Credencias inválidas!');    
         }
 
-        const responseObj = response[0];
+        const responseObj = user[0];
 
         const senhaHashed = hashSenha(password);
         const senhasCoincidem = await bcrypt.compare(password, responseObj.senha);
