@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 router.post('/acolhidas', checkSchema(acolhidaSearch), async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(200).send({status: "error", "message": errors.array()}); 
+        return res.status(200).send({status: "error", "message": errors.array()}); ;
     }
     const { acolhida } = matchedData(req);
 
