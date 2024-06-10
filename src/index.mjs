@@ -8,7 +8,9 @@ import { handleError } from './utils/helpers.mjs';
 import mysql from 'mysql2/promise';
 import cors from 'cors';
 
+let app;
 
+const main = async () => {
 //Mysql store for sessions: 
 const MySQLStoreFactory = await import('express-mysql-session');
 const MySQLStore = MySQLStoreFactory.default(session);
@@ -33,7 +35,7 @@ const sessionStore = new MySQLStore(mysqlStoreOptions, dbConnection);
 
 
 //App creation, port definition and essential middlewares:
-const app = express();
+app = express();
 const PORT = 3001;
 
 app.use(cors({
@@ -120,3 +122,8 @@ app.listen(PORT, () => {
     console.log('running on port ' + PORT);
 })
 // ------------------------------
+}
+
+export { app }
+
+main();
