@@ -28,12 +28,19 @@ export default passport.use(
         //Login Logic
 
         console.log(hashSenha("teste"));
+        var user;
+
+        try {
+            user = await prisma.usuarios.findMany({
+                where: {
+                    usuario: username
+                }
+            })    
+        }
+        catch (error) {
+            return done(null, false, 'Erro ao efetuar Login!');    
+        }
         
-        const user = await prisma.usuarios.findMany({
-            where: {
-                usuario: username
-            }
-        })
 
         if (!user) {
             return done(null, false, 'Credencias inválidas!');
