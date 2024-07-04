@@ -14,10 +14,11 @@ router.post("/benfeitores", checkSchema(benfeitoresSearch), async (req, res) => 
         return res.status(200).send({status: "error", "message": errors.array()});
     }
     const { benfeitor } = matchedData(req);
-    var response;
+    
     try {
+        var benfeitores
         if (benfeitor !== "") {
-            response = await prisma.benfeitores.findMany({
+            benfeitores = await prisma.benfeitores.findMany({
                 where: {
                     nome: {
                         contains: benfeitor
@@ -26,23 +27,30 @@ router.post("/benfeitores", checkSchema(benfeitoresSearch), async (req, res) => 
             })
         }
         if (benfeitor === "") {
-            response = await prisma.benfeitores.findMany();
+            benfeitores = await prisma.benfeitores.findMany();
         }
-    } catch (error) {
+
+
+
+
+    
+    if (!benfeitores || benfeitores.length == 0) {
+        return handleError(res, "Nenhum benfeitor encontrado.");
+    }
+
+    if (benfeitores.length >= 1) {
+        benfeitores.forEach(benfeitor => {
+            
+        })
+
+
+        return res.status(200).send({status: "success", data: benfeitores}); 
+    }
+    return handleError(res, "Erro inesperado.");
+    }
+    catch (error) {
         return handleError(res, error);
     }
-    
-    
-
-    if (!response || response.length == 0) {
-        return handleError(res, "Nenhum benfeitor encontrado.");
-        }
-
-    if (response.length >= 1) {
-        return res.status(200).send({status: "success", data: response}); 
-    }
-    
-    return handleError(res, "Erro inesperado.");
 });
 
 
@@ -53,10 +61,18 @@ router.post("/benfeitores/registerjuridica", checkSchema(benfeitorRegisterJuridi
     }
     const { cnpj, razaoSocial, telefone } = matchedData(req);
     try {
+        const checaExiste = await prisma.benfeitores.findUnique({
+            where: {
+                cnpj
+            }
+        })
+        if (checaExiste) {
+            return res.status(200).send({status: "error", message: "CNPJ já cadastrado!"});
+        }
         const benfeitor = await prisma.benfeitores.create({
             data: {
                 cnpj,   
-                razaoSocial: razaoSocial,
+                razaoSocial,
                 telefone,
                 tipo: "juridico"
             }
@@ -76,6 +92,15 @@ router.post("/benfeitores/registerfisica", checkSchema(benfeitorRegisterFisica),
     }
     const { nome, telefone, cpf } = matchedData(req);
     try {
+        const checaExiste = await prisma.benfeitores.findUnique({
+            where: {
+                cpf
+            }
+        })
+        if (checaExiste) {
+            return res.status(200).send({status: "error", message: "CPF já cadastrado!"});
+        }
+
         const benfeitor = await prisma.benfeitores.create({
             data: {
                 cpf,
@@ -86,6 +111,7 @@ router.post("/benfeitores/registerfisica", checkSchema(benfeitorRegisterFisica),
         });
         return res.status(200).send({status: "success", data: benfeitor});
     } catch (error) {
+        console.log(error);
         return handleError(res, error);
     }
 })

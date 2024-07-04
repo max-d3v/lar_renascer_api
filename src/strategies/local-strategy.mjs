@@ -25,9 +25,6 @@ passport.deserializeUser((user, done) => {
 
 export default passport.use(
     new Strategy({ usernameField: "usuario", passwordField: "senha" }, async (username, password, done) => {
-        //Login Logic
-
-        console.log(hashSenha("teste"));
         var user;
 
         try {
@@ -51,7 +48,6 @@ export default passport.use(
 
         const responseObj = user[0];
 
-        const senhaHashed = hashSenha(password);
         const senhasCoincidem = await bcrypt.compare(password, responseObj.senha);
 
         if (senhasCoincidem) {

@@ -37,7 +37,11 @@ model acolhidas {
   valorPensao                     String?   @map("valor_pensao") @db.VarChar(50)
   historiaPregressaAtual          String?   @map("historia_pregressa_atual") @db.LongText
   cpf                             String?   @map("cpf") @db.VarChar(50) @unique
-  data_cadastro                   DateTime? @map("data_cadastro") @db.DateTime(0)
+  naturalidade                    String?   @db.VarChar(255)
+  dataAcolhimento                 DateTime? @map("data_acolhimento") @db.Date
+  dataDesligamento               DateTime? @map("data_desligamento") @db.Date
+  dataCadastro                   DateTime? @map("data_cadastro") @default(now())
+  dataAtualizacao                 DateTime? @map("data_atualizacao") @updatedAt
 
   @@index([cpf], map: "cpf")
 }
@@ -49,6 +53,7 @@ model composicao_familiar {
   parentesco     String?   @db.Text
   dataNascimento DateTime? @map("data_nascimento") @db.Date
   escolaridade   String?   @db.LongText
+  dataCadastro  DateTime? @map("data_cadastro") @db.DateTime(0)
 }
 
 model sessions {
@@ -63,6 +68,7 @@ model usuarios {
   tipo    String @default("0") @db.VarChar(250)
   usuario String @default("0") @db.VarChar(250) @unique
   senha   String @default("0") @db.VarChar(250)
+  dataCadastro DateTime @map("data_cadastro") @default(now())
 }
 
 model benfeitores {
@@ -72,5 +78,17 @@ model benfeitores {
   cnpj        String? @db.VarChar(50) @unique
   cpf         String? @db.VarChar(50) @unique
   telefone    String? @db.VarChar(50)
-  tipo        String  @db.VarChar(50)
+  tipo        String  @db.VarChar(50) 
+  dataCadastro DateTime @map("data_cadastro") @default(now())
+  ultimaAtualizacao DateTime @map("ultima_atualizacao") @updatedAt
+} 
+
+model transacoes {
+  id          Int     @id @default(autoincrement())
+  idBenfeitor  Int?    @map("id_benfeitor")
+  valor       Float   @db.Float
+  tipo       String  @db.VarChar(255)
+  dataTransacao DateTime @map("data_transacao") @default(now())
+  linksDocs   String? @map("links_docs") @db.Text
+  ultimaAtualizacao DateTime @map("ultima_atualizacao") @updatedAt
 }

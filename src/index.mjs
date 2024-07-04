@@ -43,7 +43,9 @@ app.use(cors({
         'http://localhost:5173',
         'http://localhost:3000',
     ],
-    credentials: true
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'x-requested-with'], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
 app.use(cookieParser('key'))
@@ -68,18 +70,14 @@ app.use(passport.session());
 //Authentication middleware
 app.use((req, res, next) => {
 
-    if (true) {
-        return next();
-    }
-
     if (req.path == '/api/v1/auth/login') {
         return next();
     }
     if (req.isAuthenticated()) {
         return next();
-    } else {
-        return res.status(401).send({status: "error", msg: "Unauthorized"})
     }
+    return res.status(401).send({status: "error", msg: "Unauthorized"})
+    
 })
 
 
@@ -87,7 +85,7 @@ app.use((req, res, next) => {
 
 //Router initialization and status endpoint
 app.get("/api/v1/status", (req, res) => {
-    res.status(200).send({"status": "success", "msg": "Ok sistems"})
+    res.status(200).send({"status": "success", "message": "Server is running"})
 })
 
 app.use('/api/v1', routerIndex)

@@ -3,24 +3,23 @@ import { validaCNPJ, validaCPF } from "./helpers.mjs"
 
 export const acolhidaSearch = {
     acolhida: {
-        notEmpty: {
-            exists: {
-                errorMessage: "Acolhida não fornecida!",
-                options: { checkNull: true }
-            },
-        },
+        isString: {
+            errorMessage: "Acolhida deve ser um texto!"
+        }
     }
 }
 
 export const benfeitoresSearch = {
     benfeitor: {
-        notEmpty: {
-            exists: {
-                errorMessage: "Benfeitor não fornecido!",
-                options: { checkNull: true }
+        custom: {
+            options: (value) => {
+                if (value == undefined || value == null || typeof value !== "string" ) {
+                    throw new Error('Benfeitor deve ser um texto!');
+                }
+                return true;
             },
         },
-    }
+    },
 }
 
 export const benfeitorRegisterFisica = {
