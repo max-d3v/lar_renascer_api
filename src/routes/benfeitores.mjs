@@ -114,6 +114,32 @@ router.post("/benfeitores/registerfisica", checkSchema(benfeitorRegisterFisica),
         console.log(error);
         return handleError(res, error);
     }
+});
+
+router.get("/benfeitor/:id", async (req, res) => {
+    const {id} =  req.params;
+    if (!id) {
+        return handleError(res, "ID não informado.");
+    }
+
+    const benfeitor = await prisma.benfeitores.findUnique({
+        where: {
+            id: parseInt(id)
+        }
+    });
+
+    const transacoes = await prisma.transacoes.findMany({
+        where: {
+            idBenfeitor: parseInt(id)
+        }
+    });
+
+    if (!benfeitor) {
+        return handleError(res, "Benfeitor não encontrado.");
+    }
+
+    return res.status(200).send({status: "success", benfeitor: benfeitor, transacoes: transacoes});
+
 })
 
 
